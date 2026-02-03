@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вечные источники | PGL CORP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Звёздное небо */
+        #stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+        
+        .star:nth-child(3n) {
+            background-color: #e6e6ff;
+            opacity: 0.6;
+        }
+        
+        .star:nth-child(5n) {
+            background-color: #f0f8ff;
+            opacity: 0.9;
+        }
+        
+        /* Млечный путь */
+        .milky-way {
+            position: absolute;
+            width: 200%;
+            height: 300px;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(15deg);
+            top: 30%;
+            left: -50%;
+            z-index: 0;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        }
+        
+        .logo {
+            margin-bottom: 40px;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .logo-circle {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(60, 60, 80, 0.9), rgba(10, 10, 20, 0.9));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 0 30px rgba(100, 100, 255, 0.2),
+                inset 0 0 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-circle::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: rotate 10s linear infinite;
+        }
+        
+        .logo-icon {
+            font-size: 56px;
+            color: #e6e6ff;
+            z-index: 2;
+            position: relative;
+            text-shadow: 0 0 10px rgba(200, 200, 255, 0.5);
+        }
+        
+        .main-title {
+            font-size: 3.8rem;
+            font-weight: 300;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            color: #ffffff;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.5),
+                0 0 20px rgba(100, 100, 255, 0.3);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            font-weight: 300;
+            margin-bottom: 50px;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1px;
+            line-height: 1.6;
+        }
+        
+        .link-container {
+            background: rgba(20, 20, 30, 0.8);
+            border-radius: 18px;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease;
+        }
+        
+        .link-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.7),
+                0 0 20px rgba(100, 100, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border-color: rgba(100, 100, 255, 0.3);
+        }
+        
+        .link-label {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .link-label i {
+            color: #0088cc;
+        }
+        
+        .telegram-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            background: linear-gradient(135deg, #0088cc, #005580);
+            color: white;
+            text-decoration: none;
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(0, 136, 204, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .telegram-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .telegram-link:hover::before {
+            left: 100%;
+        }
+        
+        .telegram-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 30px rgba(0, 136, 204, 0.5);
+            background: linear-gradient(135deg, #0099e6, #006699);
+        }
+        
+        .telegram-icon {
+            font-size: 2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .telegram-link:hover .telegram-icon {
+            transform: rotate(15deg) scale(1.1);
+        }
+        
+        .footer {
+            margin-top: 50px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .pgl-corner {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-weight: 300;
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 4px;
+            z-index: 3;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Анимации */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.2; }
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 15px;
+                width: 95%;
+            }
+            
+            .main-title {
+                font-size: 2.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 40px;
+            }
+            
+            .telegram-link {
+                font-size: 1.3rem;
+                padding: 18px 30px;
+            }
+            
+            .pgl-corner {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 20px;
+                font-size: 1.5rem;
+            }
+            
+            .logo-circle {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .logo-icon {
+                font-size: 48px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 2.2rem;
+            }
+            
+            .link-container {
+                padding: 20px;
+            }
+            
+            .telegram-link {
+                font-size: 1.1rem;
+                padding: 16px 25px;
+            }
+            
+            .logo-circle {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .logo-icon {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="stars"></div>
+    <div class="milky-way"></div>
+    
+    <div class="pgl-corner">PGL CORP</div>
+    
+    <div class="container">
+        <div class="logo">
+            <div class="logo-circle">
+                <i class="fas fa-infinity logo-icon"></i>
+            </div>
+        </div>
+        
+        <h1 class="main-title">Вечные источники</h1>
+        <p class="subtitle">Официальный канал PGL CORP в Telegram<br>Присоединяйтесь к нашему сообществу знаний и идей</p>
+        
+        <div class="link-container">
+            <div class="link-label">
+                <i class="fas fa-paper-plane"></i>
+                Вечная ссылка на Telegram-канал
+            </div>
+            <a href="https://t.me/PGL_PEREXOD" target="_blank" class="telegram-link">
+                <i class="fab fa-telegram-plane telegram-icon"></i>
+                @PGL_PEREXOD
+            </a>
+        </div>
+        
+        <div class="footer">
+            Вечная ссылка от PGL CORP &copy; Вселенная знаний бесконечна
+        </div>
+    </div>
+
+    <script>
+        // Создаём звёздное небо
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 400;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Случайный размер
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Случайная позиция
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`;
+                
+                // Случайная прозрачность
+                star.style.opacity = Math.random() * 0.8 + 0.2;
+                
+                // Случайная анимация мерцания
+                if (Math.random() > 0.7) {
+                    const duration = Math.random() * 5 + 3;
+                    star.style.animation = `twinkle ${duration}s infinite alternate`;
+                }
+                
+                starsContainer.appendChild(star);
+            }
+            
+            // Добавляем несколько "падающих звёзд"
+            for (let i = 0; i < 3; i++) {
+                createShootingStar();
+            }
+        }
+        
+        // Создаём падающие звёзды
+        function createShootingStar() {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.width = '2px';
+            star.style.height = '2px';
+            star.style.backgroundColor = '#ffffff';
+            star.style.boxShadow = '0 0 10px 2px rgba(255, 255, 255, 0.8)';
+            
+            // Начальная позиция
+            const startX = Math.random() * 100;
+            star.style.left = `${startX}vw`;
+            star.style.top = `${Math.random() * 30}vh`;
+            
+            document.getElementById('stars').appendChild(star);
+            
+            // Анимация полёта
+            const duration = Math.random() * 2 + 1;
+            const distance = 100 + Math.random() * 200;
+            
+            const keyframes = [
+                { 
+                    transform: 'translate(0, 0)', 
+                    opacity: 0 
+                },
+                { 
+                    transform: `translate(${distance}px, ${distance}px)`, 
+                    opacity: 1 
+                },
+                { 
+                    transform: `translate(${distance * 2}px, ${distance * 2}px)`, 
+                    opacity: 0 
+                }
+            ];
+            
+            const timing = {
+                duration: duration * 1000,
+                iterations: 1
+            };
+            
+            star.animate(keyframes, timing).onfinish = () => {
+                star.remove();
+                // Создаём новую падающую звезду через случайное время
+                setTimeout(createShootingStar, Math.random() * 5000 + 2000);
+            };
+        }
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            
+            // Добавляем интерактивность кнопке
+            const link = document.querySelector('.telegram-link');
+            
+            link.addEventListener('mousedown', function() {
+                this.style.transform = 'scale(0.95)';
+            });
+            
+            link.addEventListener('mouseup', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+            
+            // Эффект при клике
+            link.addEventListener('click', function(e) {
+                // Создаём эффект пульсации
+                const pulse = document.createElement('div');
+                pulse.style.position = 'absolute';
+                pulse.style.borderRadius = '50%';
+                pulse.style.backgroundColor = 'rgba(0, 136, 204, 0.3)';
+                pulse.style.width = '10px';
+                pulse.style.height = '10px';
+                pulse.style.left = '50%';
+                pulse.style.top = '50%';
+                pulse.style.transform = 'translate(-50%, -50%)';
+                pulse.style.zIndex = '1';
+                
+                this.appendChild(pulse);
+                
+                const animation = pulse.animate([
+                    { width: '10px', height: '10px', opacity: 1 },
+                    { width: '200px', height: '200px', opacity: 0 }
+                ], {
+                    duration: 600,
+                    easing: 'ease-out'
+                });
+                
+                animation.onfinish = () => pulse.remove();
+            });
+        });
+    </script>
+</body>
+</html>
